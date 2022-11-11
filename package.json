@@ -1,0 +1,36 @@
+{
+  "name": "waext",
+  "version": "0.0.2",
+  "description": "",
+  "main": "background.js",
+  "scripts": {
+    "build-prep": "rm -rf build/addon build/extension && mkdir -p build/addon && mkdir -p build/extension && cp -R assets build/addon/ && cp -R assets build/extension/",
+    "build-chromium-popup": "./node_modules/.bin/browserify -t [ envify --NODE_VARIANT chromium ] src/popup.js -o build/extension/popup.js && cp src/popup.html build/extension/popup.html",
+    "build-chromium-content": "./node_modules/.bin/browserify -t [ envify --NODE_VARIANT chromium ] src/content.js -o build/extension/content.js",
+    "build-chromium-background": "./node_modules/.bin/browserify -t [ envify --NODE_VARIANT chromium ] src/background.js -o build/extension/background.js",
+    "build-chromium-manifest": "node scripts/generate-manifest.js",
+    "build-chromium-pack": "mkdir -p build/zip && cp build/extension/manifest.json build/zip && cd build/extension && ../../node_modules/.bin/crx pack -o ../zip/waext.crx",
+    "build-chromium-zip": "cd build/zip && zip -r waext.zip waext.crx manifest.json",
+    "build-chromium": "npm run build-prep && npm run build-chromium-popup && npm run build-chromium-content && npm run build-chromium-background && npm run build-chromium-manifest && npm run build-chromium-manifest && npm run build-chromium-pack && npm run build-chromium-zip",
+    "build": "npm run build-chromium",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "(cd server && npm install && npm run build && npm run start)",
+    "obfuscate-chromium-popup": "./node_modules/.bin/javascript-obfuscator build/extension/popup.js --output build/extension/popup.js",
+    "obfuscate-chromium-content": "./node_modules/.bin/javascript-obfuscator build/extension/content.js --output build/extension/content.js",
+    "obfuscate-chromium-background": "./node_modules/.bin/javascript-obfuscator build/extension/background.js --output build/extension/background.js",
+    "obfuscate-chromium": "npm run obfuscate-chromium",
+    "dev": "npm run build && npm run doc && npm run server",
+    "doc": "node_modules/.bin/jsdoc src -d server/public/docs"
+  },
+  "author": "Herpiko Dwi Aguno <herpiko@gmail.com>",
+  "license": "Proprietary",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "browserify": "^16.5.0",
+    "crx": "^5.0.1",
+    "envify": "^4.1.0"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^0.18.1"
+  }
+}

@@ -1,0 +1,27 @@
+image: herpiko/bsre-browser-extension-builder
+
+variables:
+  ACTION: "DEFAULT"
+
+stages:
+  - build
+
+build:
+  stage: build
+  only: 
+    variables:
+      - $ACTION == "DEFAULT"
+  cache:
+    paths:
+      - node_modules/
+  artifacts:
+    paths:
+    - build/zip/waext.crx
+    - build/zip/manifest.json
+    - build/zip/waext.zip
+    expire_in: 100 yrs
+  script:
+    - apk update
+    - apk add zip
+    - npm install
+    - npm run build

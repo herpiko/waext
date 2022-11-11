@@ -1,0 +1,8 @@
+node_modules
+mock-server/node_modules
+extension/*.js
+extension/*.js.*
+mock-server/public/*.js
+mock-server/public/*.js.*
+**/.DS_Store
+build
