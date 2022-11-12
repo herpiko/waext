@@ -31,12 +31,10 @@ const init = () => {
 			clearInterval(interval);
 			applySearchFeature();
 			apply();
-			/* Rerender on scroll
 			setInterval(() => {
 				console.log('===========================');
 				apply();
 			}, 1000);
-			 */
 		}
 	}, 1000);
 };
